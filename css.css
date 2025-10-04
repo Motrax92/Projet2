@@ -1,0 +1,32 @@
+/* style.css */
+@import url('https://fonts.googleapis.com/css2?family=Ole&display=swap');
+
+body {
+    font-family: "Ole", Helvetica, sans-serif;
+    background-color: #ffffff;
+    color: #000000;
+    margin: 0;
+    padding: 20px;
+}
+
+/* Titre principal */
+h1 {
+    text-align: center;
+    color: #33bd3e;
+    font-size: 2.5em;
+    margin-bottom: 20px;
+}
+
+/* Paragraphe */
+p {
+    font-size: 1.2em;
+    line-height: 1.6;
+    text-align: center;
+}
+
+/* Si tu veux mettre en valeur le texte "Puissant Quatre" */
+p:last-child {
+    font-weight: bold;
+    font-size: 1.4em;
+    color: #e74c3c;
+}
