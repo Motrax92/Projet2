@@ -12,7 +12,7 @@ body {
 /* Titre principal */
 h1 {
     text-align: center;
-    color: #33bd3e;
+    color: #db0505;
     font-size: 2.5em;
     margin-bottom: 20px;
 }
@@ -29,4 +29,31 @@ p:last-child {
     font-weight: bold;
     font-size: 1.4em;
     color: #e74c3c;
+}
+
+/* 1) Enlever les marges par défaut */
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+/* 2) Header plein écran, sans marge */
+.site-header {
+  width: 100%;
+  max-width: none;
+  margin: 0;                 /* ← important */
+  background: #1b1b1b;
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 24px;
+  box-sizing: border-box;    /* évite les débordements */
+}
+
+/* 3) Ton conteneur centré ne s’applique qu’au contenu, pas au header */
+.container {
+  max-width: 1100px;
+  margin: 24px auto;
+  padding: 0 16px;
 }
