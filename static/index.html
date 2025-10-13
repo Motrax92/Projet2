@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Puissant pas Quatre</title>
+  <link rel="stylesheet" href="css.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center; 
+    }
+    .board {
+      display: inline-block;
+      margin: 20px auto;
+    }
+    .row {
+      display: flex;
+    }
+    .cell {
+      width: 50px;
+      height: 50px;
+      border: 1px solid #333;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+    }
+    button {
+      margin: 5px;
+      padding: 10px 20px;
+    }
+  </style>
+</head>
+
+<body>
+  <header class="site-header">
+    <h1>Puissant pas Quatre</h1>
+  </header>
+
+  <main>
+    <p>Ceci est un puissant quatre créé par Mohamed, Joey, Aurélie.</p>
+
+    <div id="board" class="board"></div>
+
+    <div>
+      <button onclick="play(0)">Colonne 1</button>
+      <button onclick="play(1)">Colonne 2</button>
+      <button onclick="play(2)">Colonne 3</button>
+      <button onclick="play(3)">Colonne 4</button>
+      <button onclick="play(4)">Colonne 5</button>
+      <button onclick="play(5)">Colonne 6</button>
+      <button onclick="play(6)">Colonne 7</button>
+    </div>
+
+    <p id="message"></p>
+  </main>
+
+  <script>
+    async function play(column) {
+      const response = await fetch("/move", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ column }),
+      });
+      const result = await response.json();
+      renderGrid(result.Grid);
+      document.getElementById("message").textContent = result.Message;
+    }
+
+    function renderGrid(grid) {
+      const board = document.getElementById("board");
+      board.innerHTML = "";
+      for (let y = 0; y < 6; y++) {
+        const row = document.createElement("div");
+        row.className = "row";
+        for (let x = 0; x < 7; x++) {
+          const cell = document.createElement("div");
+          cell.className = "cell";
+          cell.textContent = grid[x][y] === " " ? "" : grid[x][y];
+          row.appendChild(cell);
+        }
+        board.appendChild(row);
+      }
+    }
+
+    // Initialise la grille vide
+    renderGrid([
+      [" ", " ", " ", " ", " ", " "],
+      [" ", " ", " ", " ", " ", " "],
+      [" ", " ", " ", " ", " ", " "],
+      [" ", " ", " ", " ", " ", " "],
+      [" ", " ", " ", " ", " ", " "],
+      [" ", " ", " ", " ", " ", " "],
+      [" ", " ", " ", " ", " ", " "],
+    ]);
+  </script>
+</body>
+</html>
