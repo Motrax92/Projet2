@@ -10,7 +10,7 @@ import (
 const None = ' '
 
 var grid [7][6]rune
-var currentPlayer rune = 'X'
+var currentPlayer rune = '🟡'
 
 func init() {
 	resetGrid()
@@ -83,10 +83,10 @@ func playMove(column int) string {
 }
 
 func switchPlayer() {
-	if currentPlayer == 'X' {
-		currentPlayer = 'O'
+	if currentPlayer == '🟡' {
+		currentPlayer = '🔴'
 	} else {
-		currentPlayer = 'X'
+		currentPlayer = '🟡'
 	}
 }
 
