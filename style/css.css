@@ -25,9 +25,9 @@
 .cell {
   width: 72px;               /* plus large pour un look arcade */
   height: 72px;
-  border-radius: 50%;        /* rond */
+  border-radius: 95%;        /* rond */
   border: none;              /* on enlève la bordure carrée */
-  background: radial-gradient(circle at 35% 35%, #0b0f1c 0 24%, #0a1f48 24% 100%);
+  background: radial-gradient(circle at 75% 75%, #0b0f1c 0 24%, #0a1f48 75% 100%);
   box-shadow: inset 0 8px 16px #000c, 0 4px 8px #0007;
   position: relative;
   overflow: hidden;
@@ -40,8 +40,8 @@
 
 /* Boutons colonne : style propre */
 button {
-  background: #1f6bff;
-  color: #fff;
+  background: #190061;
+  color: #ffffff;
   border: none;
   padding: 10px 14px;
   border-radius: 12px;
@@ -66,7 +66,7 @@ button:hover { filter: brightness(1.07); }
 .cell.x::after, .cell.o::after {
   content: "";
   position: absolute; inset: 8px;
-  border-radius: 50%;
+  border-radius: 75%;
   border: 4px solid #0006;
   box-shadow: inset 0 10px 18px #fff3, 0 8px 18px #0007;
 }
@@ -83,7 +83,7 @@ body, button { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
 /* header en pleine largeur, contenu à gauche/droite */
 .site-header{
   width:100%;
-  background:#1e1e1e; color:#fff;
+  background:#1e1e1e; color:#fff3;
   display:flex; align-items:center; justify-content:space-between;
   padding:12px 24px; box-sizing:border-box;
   text-align: initial; /* annule le text-align:center du body dans le header */
@@ -95,10 +95,10 @@ body, button { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
 
 /* droite */
 .nav a{
-  color:#fff; text-decoration:none; margin-left:18px; font-weight:600;
+  color:#0C0032; text-decoration:none; margin-left:18px; font-weight:600;
 }
-.nav a:hover{ color:#00bfff; }
+.nav a:hover{ color:#190061; }
 
 /* option: bande noire au-dessus, et header collant */
-.top-band{ background:#000; color:#fff; text-align:center; padding:8px 16px; position:sticky; top:0; z-index:1001; }
+.top-band{ background:#000; color:#0C0032; text-align:center; padding:8px 16px; position:sticky; top:0; z-index:1001; }
 .site-header{ position:sticky; top:40px; z-index:1000; } /* 40px = hauteur approx. de la bande */
