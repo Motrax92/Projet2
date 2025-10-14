@@ -7,33 +7,40 @@ import (
 	"net/http"
 )
 
-const None = ' '
+const (
+	cols = 7
+	rows = 6
+	None = ' ' // case vide
+)
 
-var grid [7][6]rune
-var currentPlayer rune = '🟡'
+var grid [cols][rows]rune
+var currentPlayer rune = '🟡' // 🟡 commence
 
-func init() {
-	resetGrid()
-}
+func init() { resetGrid() }
 
 func resetGrid() {
-	for i := 0; i < 7; i++ {
-		for j := 0; j < 6; j++ {
-			grid[i][j] = None
+	for x := 0; x < cols; x++ {
+		for y := 0; y < rows; y++ {
+			grid[x][y] = None
 		}
 	}
+	currentPlayer = '🟡'
 }
 
 type Move struct {
 	Column int `json:"column"`
 }
 
+// On renvoie des STRINGS (et pas des runes) -> le front affiche directement 🟡 / 🔴
 type GameState struct {
-	Grid    [7][6]rune
-	Message string
+	Grid    [][]string `json:"Grid"`
+	Message string     `json:"Message"`
 }
 
 func main() {
+	// sert /style/* (ex: /style/css.css)
+	http.Handle("/style/", http.StripPrefix("/", http.FileServer(http.Dir("."))))
+
 	http.HandleFunc("/", serveHome)
 	http.HandleFunc("/move", handleMove)
 
@@ -42,8 +49,9 @@ func main() {
 }
 
 func serveHome(w http.ResponseWriter, r *http.Request) {
+	// ton index est dans static/index.html
 	tpl := template.Must(template.ParseFiles("static/index.html"))
-	tpl.Execute(w, nil)
+	_ = tpl.Execute(w, nil)
 }
 
 func handleMove(w http.ResponseWriter, r *http.Request) {
@@ -59,24 +67,35 @@ func handleMove(w http.ResponseWriter, r *http.Request) {
 	}
 
 	message := playMove(move.Column)
-	resp := GameState{Grid: grid, Message: message}
-	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(resp)
+	resp := GameState{Grid: exportGrid(), Message: message}
+
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
+	_ = json.NewEncoder(w).Encode(resp)
 }
 
 func playMove(column int) string {
-	if column < 0 || column >= 7 {
+	if column < 0 || column >= cols {
 		return "Colonne invalide."
 	}
 
-	for i := 5; i >= 0; i-- {
-		if grid[column][i] == None {
-			grid[column][i] = currentPlayer
-			if checkVictory() {
+	// déposer le jeton (gravité)
+	for y := rows - 1; y >= 0; y-- {
+		if grid[column][y] == None {
+			grid[column][y] = currentPlayer
+
+			// victoire ?
+			if checkVictory(column, y, currentPlayer) {
 				return string(currentPlayer) + " a gagné 🎉 !"
 			}
+
+			// match nul ?
+			if isDraw() {
+				return "🤝 Match nul !"
+			}
+
+			// tour suivant
 			switchPlayer()
-			return "Coup joué par " + string(grid[column][i])
+			return "Coup joué par " + string(grid[column][y])
 		}
 	}
 	return "Colonne pleine !"
@@ -90,16 +109,58 @@ func switchPlayer() {
 	}
 }
 
-func checkVictory() bool {
-	for y := 0; y < 6; y++ {
-		for x := 0; x < 4; x++ {
-			if grid[x][y] != None &&
-				grid[x][y] == grid[x+1][y] &&
-				grid[x][y] == grid[x+2][y] &&
-				grid[x][y] == grid[x+3][y] {
-				return true
+// Convertit la grille [7][6]rune -> [][]string avec "" / "🟡" / "🔴"
+func exportGrid() [][]string {
+	out := make([][]string, cols)
+	for x := 0; x < cols; x++ {
+		out[x] = make([]string, rows)
+		for y := 0; y < rows; y++ {
+			if grid[x][y] == None {
+				out[x][y] = ""
+			} else {
+				out[x][y] = string(grid[x][y])
 			}
 		}
 	}
+	return out
+}
+
+func isDraw() bool {
+	// s'il reste une case vide en haut de n'importe quelle colonne, pas nul
+	for x := 0; x < cols; x++ {
+		if grid[x][0] == None {
+			return false
+		}
+	}
+	return true
+}
+
+func checkVictory(x, y int, p rune) bool {
+	// 4 directions : →, ↓, ↘, ↗  (on compte dans les 2 sens)
+	dirs := [][2]int{{1, 0}, {0, 1}, {1, 1}, {1, -1}}
+	for _, d := range dirs {
+		count := 1
+		count += countDir(x, y, d[0], d[1], p)
+		count += countDir(x, y, -d[0], -d[1], p)
+		if count >= 4 {
+			return true
+		}
+	}
 	return false
+}
+
+func countDir(x, y, dx, dy int, p rune) int {
+	n := 0
+	for {
+		x += dx
+		y += dy
+		if x < 0 || x >= cols || y < 0 || y >= rows {
+			break
+		}
+		if grid[x][y] != p {
+			break
+		}
+		n++
+	}
+	return n
 }
