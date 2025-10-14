@@ -3,8 +3,37 @@
 <head>
   <meta charset="UTF-8">
   <title>Puissant pas Quatre</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- garde ton CSS externe si tu en as un -->
   <link rel="stylesheet" href="style/css.css">
+
   <style>
+    /* ====== AJOUTS bande + header ====== */
+    /* Bande noire tout en haut */
+    .top-band{
+      width:100%;
+      background:#000000; color:#fff;
+      text-align:center;
+      padding:8px 16px;
+      font-weight:700;
+      letter-spacing:.2px;
+      position:sticky; top:0; z-index:1001;
+    }
+    /* Header: titre à gauche, liens à droite (collé sous la bande) */
+    .site-header{
+      width:100%;
+      background:#000000; color:#fff;
+      display:flex; align-items:center; justify-content:space-between;
+      padding:12px 24px; box-sizing:border-box;
+      position:sticky; top:40px; z-index:1000;  /* 40px ≈ hauteur de la bande */
+      text-align: initial; /* annule le centrage hérité du body */
+    }
+    .brand{display:flex; align-items:center; gap:10px; font-weight:700}
+    .brand span{font-size:1.1rem}
+    .nav a{color:#fff; text-decoration:none; margin-left:18px; font-weight:600}
+    .nav a:hover{color:#00bfff}
+
+    /* ====== Tes styles existants ====== */
     body {
       font-family: Arial, sans-serif;
       text-align: center; 
@@ -13,28 +42,33 @@
       display: inline-block;
       margin: 20px auto;
     }
-    .row {
-      display: flex;
-    }
+    .row { display: flex; }
     .cell {
-      width: 50px;
-      height: 50px;
+      width: 50px; height: 50px;
       border: 1px solid #333;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: flex; align-items: center; justify-content: center;
       font-size: 24px;
     }
-    button {
-      margin: 5px;
-      padding: 10px 20px;
-    }
+    button { margin: 5px; padding: 10px 20px; }
   </style>
 </head>
 
 <body>
+
+  <!-- Bande noire -->
+  <div class="top-band">Puissant pas Quatre</div>
+
+  <!-- Header avec titre à gauche et liens à droite -->
   <header class="site-header">
-    <h1>Puissant pas Quatre</h1>
+    <div class="brand">
+      <!-- <img src="logo.png" alt="Logo"> -->
+      <span>Puissant pas Quatre</span>
+    </div>
+    <nav class="nav">
+      <a href="#">Accueil</a>
+      <a href="#">Règles</a>
+      <a href="#">Contact</a>
+    </nav>
   </header>
 
   <main>
@@ -85,13 +119,13 @@
 
     // Initialise la grille vide
     renderGrid([
-      [" ", " ", " ", " ", " ", " "],
-      [" ", " ", " ", " ", " ", " "],
-      [" ", " ", " ", " ", " ", " "],
-      [" ", " ", " ", " ", " ", " "],
-      [" ", " ", " ", " ", " ", " "],
-      [" ", " ", " ", " ", " ", " "],
-      [" ", " ", " ", " ", " ", " "],
+      [" "," "," "," "," "," "],
+      [" "," "," "," "," "," "],
+      [" "," "," "," "," "," "],
+      [" "," "," "," "," "," "],
+      [" "," "," "," "," "," "],
+      [" "," "," "," "," "," "],
+      [" "," "," "," "," "," "],
     ]);
   </script>
 </body>

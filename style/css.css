@@ -1,59 +1,104 @@
-/* style.css */
-@import url('https://fonts.googleapis.com/css2?family=Ole&display=swap');
+/* ====== Plateau Puissance 4 (ajouts) ====== */
 
-body {
-    font-family: "Arial", Helvetica, sans-serif;
-    background-color: #ffffff;
-    color: #000000;
-    margin: 0;
-    padding: 20px;
+/* Conteneur du plateau (optionnel si tu veux une carte bleue autour) */
+.board-wrap {
+  background: #1140a6;
+  border-radius: 18px;
+  padding: 12px;
+  box-shadow: inset 0 14px 40px #0008, 0 18px 42px #0007;
+  width: fit-content;
+  margin: 16px auto;
 }
 
-/* Titre principal */
-h1 {
-    text-align: center;
-    color: #db0505;
-    font-size: 2.5em;
-    margin-bottom: 20px;
+/* Ton HTML utilise .board, .row, .cell : on améliore l’apparence */
+.board {
+  display: inline-block; /* tu l’as déjà */
 }
 
-/* Paragraphe */
-p {
-    font-size: 1.2em;
-    line-height: 1.6;
-    text-align: center;
+/* Chaque ligne reste en flex (tu l’as déjà) */
+.row {
+  display: flex; /* tu l’as déjà */
+  gap: 10px;     /* petit espace entre les "trous" */
 }
 
-/* Si tu veux mettre en valeur le texte "Puissant Quatre" */
-p:last-child {
-    font-weight: bold;
-    font-size: 1.4em;
-    color: #e74c3c;
-}
+/* Trou du plateau : rond + effet */
+.cell {
+  width: 72px;               /* plus large pour un look arcade */
+  height: 72px;
+  border-radius: 50%;        /* rond */
+  border: none;              /* on enlève la bordure carrée */
+  background: radial-gradient(circle at 35% 35%, #0b0f1c 0 24%, #0a1f48 24% 100%);
+  box-shadow: inset 0 8px 16px #000c, 0 4px 8px #0007;
+  position: relative;
+  overflow: hidden;
 
-/* 1) Enlever les marges par défaut */
-html, body {
-  margin: 0;
-  padding: 0;
-}
-
-/* 2) Header plein écran, sans marge */
-.site-header {
-  width: 100%;
-  max-width: none;
-  margin: 0;                 /* ← important */
-  background: #1b1b1b;
-  color: #fff;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 12px 24px;
-  box-sizing: border-box;    /* évite les débordements */
+  justify-content: center;
+  font-size: 0;              /* masque d’éventuelles lettres X/O */
 }
 
-/* 3) Ton conteneur centré ne s’applique qu’au contenu, pas au header */
-.container {
-  max-width: 1100px;
-  margin: 24px auto;
-  padding: 0 16px;
+/* Boutons colonne : style propre */
+button {
+  background: #1f6bff;
+  color: #fff;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: filter .15s ease;
 }
+button:hover { filter: brightness(1.07); }
+
+/* Message statut */
+#message {
+  min-height: 24px;
+  font-weight: 700;
+  margin-top: 6px;
+}
+
+/* ====== Affichage des pions ronds (si ton JS ajoute une classe) ======
+   Si, dans ton JS, tu fais:
+     cell.classList.add('x')  pour Rouge
+     cell.classList.add('o')  pour Jaune
+   alors ces règles affichent automatiquement les pions ronds colorés. */
+.cell.x::after, .cell.o::after {
+  content: "";
+  position: absolute; inset: 8px;
+  border-radius: 50%;
+  border: 4px solid #0006;
+  box-shadow: inset 0 10px 18px #fff3, 0 8px 18px #0007;
+}
+.cell.x::after { background: #ff334e; }   /* Rouge */
+.cell.o::after { background: #ffd04d; }   /* Jaune */
+
+/* ====== Variante sans changer ton JS ======
+   Si ton JS met des lettres "X"/"O" (innerText), tu peux les remplacer
+   par de vrais ronds en insérant un <span class="text-x"></span> / <
+
+/* ton body peut rester centré pour le contenu */
+body { text-align: center; }
+
+/* header en pleine largeur, contenu à gauche/droite */
+.site-header{
+  width:100%;
+  background:#1e1e1e; color:#fff;
+  display:flex; align-items:center; justify-content:space-between;
+  padding:12px 24px; box-sizing:border-box;
+  text-align: initial; /* annule le text-align:center du body dans le header */
+}
+
+/* gauche */
+.brand{ display:flex; align-items:center; gap:10px; font-weight:700; }
+.brand span{ font-size:1.1rem; }
+
+/* droite */
+.nav a{
+  color:#fff; text-decoration:none; margin-left:18px; font-weight:600;
+}
+.nav a:hover{ color:#00bfff; }
+
+/* option: bande noire au-dessus, et header collant */
+.top-band{ background:#000; color:#fff; text-align:center; padding:8px 16px; position:sticky; top:0; z-index:1001; }
+.site-header{ position:sticky; top:40px; z-index:1000; } /* 40px = hauteur approx. de la bande */
