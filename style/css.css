@@ -58,7 +58,7 @@ button:hover { filter: brightness(1.07); }
   margin-top: 6px;
 }
 
-/* ====== Affichage des pions ronds (si ton JS ajoute une classe) ======
+/* ====== Affichage des pions ronds (tn JSoo ajsi ute une classe) ======
    Si, dans ton JS, tu fais:
      cell.classList.add('x')  pour Rouge
      cell.classList.add('o')  pour Jaune
@@ -78,8 +78,8 @@ button:hover { filter: brightness(1.07); }
    par de vrais ronds en insérant un <span class="text-x"></span> / <
 
 /* ton body peut rester centré pour le contenu */
-body { text-align: center; }
-
+body { text-align: center; background: url(../IMG_0658.jpg) no-repeat center center fixed; background-size: cover; }
+body, button { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
 /* header en pleine largeur, contenu à gauche/droite */
 .site-header{
   width:100%;
