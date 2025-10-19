@@ -1,104 +1,132 @@
-/* ====== Plateau Puissance 4 (ajouts) ====== */
+/* ====== Fond général ====== */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  text-align: center;
+  margin: 0;
+  background: linear-gradient(to bottom, #1c2a35, #0d1b26); /* dégradé doux bleu-vert sombre */
+  color: #f0f0f5;
+}
 
-/* Conteneur du plateau (optionnel si tu veux une carte bleue autour) */
+/* ====== Bande supérieure ====== */
+.top-band {
+  background: #0f3d3e; /* bleu-vert foncé */
+  color: #e0f7fa; /* texte clair */
+  text-align: center;
+  padding: 10px 0;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  position: sticky;
+  top: 0;
+  z-index: 1001;
+}
+
+/* ====== Header ====== */
+.site-header {
+  width: 100%;
+  background: #144552; /* bleu-vert harmonieux */
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 24px;
+  box-sizing: border-box;
+  position: sticky;
+  top: 40px;
+  z-index: 1000;
+  border-bottom: 2px solid #00bfa5; /* ligne accentuée */
+}
+
+.brand span {
+  font-size: 1.3rem;
+  color: #e0f7fa;
+}
+
+.nav a {
+  color: #a0e0e0;
+  text-decoration: none;
+  margin-left: 20px;
+  font-weight: 600;
+  transition: color 0.3s;
+}
+.nav a:hover {
+  color: #00bfa5; /* bleu-vert clair */
+}
+
+/* ====== Plateau ====== */
 .board-wrap {
-  background: #1140a6;
+  background: #0c4c4c; /* vert profond */
   border-radius: 18px;
   padding: 12px;
   box-shadow: inset 0 14px 40px #0008, 0 18px 42px #0007;
   width: fit-content;
-  margin: 16px auto;
+  margin: 30px auto;
 }
 
-/* Ton HTML utilise .board, .row, .cell : on améliore l’apparence */
+/* Boutons au-dessus du plateau */
+.button-row {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.button-row button {
+  width: 56px;
+  height: 40px;
+  background: #00bfa5; /* accent turquoise */
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.button-row button:hover {
+  transform: translateY(-3px);
+  filter: brightness(1.2);
+}
+
+/* Grille */
 .board {
-  display: inline-block; /* tu l’as déjà */
+  display: inline-block;
 }
 
-/* Chaque ligne reste en flex (tu l’as déjà) */
 .row {
-  display: flex; /* tu l’as déjà */
-  gap: 10px;     /* petit espace entre les "trous" */
+  display: flex;
+  gap: 8px;
 }
 
-/* Trou du plateau : rond + effet */
+/* Cases */
 .cell {
-  width: 72px;               /* plus large pour un look arcade */
-  height: 72px;
-  border-radius: 95%;        /* rond */
-  border: none;              /* on enlève la bordure carrée */
-  background: radial-gradient(circle at 75% 75%, #0b0f1c 0 24%, #0a1f48 75% 100%);
+  width: 56px;
+  height: 56px;
+  border-radius: 95%;
+  border: none;
+  background: radial-gradient(circle at 75% 75%, #0d2e2f 0 24%, #0a1c1d 75% 100%);
   box-shadow: inset 0 8px 16px #000c, 0 4px 8px #0007;
   position: relative;
   overflow: hidden;
-
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0;              /* masque d’éventuelles lettres X/O */
+  font-size: 0;
 }
 
-/* Boutons colonne : style propre */
-button {
-  background: #190061;
-  color: #ffffff;
-  border: none;
-  padding: 10px 14px;
-  border-radius: 12px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: filter .15s ease;
+/* Jetons (inchangés) */
+.cell.x::after, .cell.o::after {
+  content: "";
+  position: absolute; inset: 6px;
+  border-radius: 75%;
+  border: 3px solid #0006;
+  box-shadow: inset 0 8px 14px #fff3, 0 6px 14px #0007;
 }
-button:hover { filter: brightness(1.07); }
+.cell.x::after { background: #ff334e; } /* rouge */
+.cell.o::after { background: #ffd04d; } /* jaune */
 
-/* Message statut */
+/* Message */
 #message {
   min-height: 24px;
   font-weight: 700;
-  margin-top: 6px;
+  margin-top: 12px;
+  color: #e0f7fa;
 }
-
-/* ====== Affichage des pions ronds (tn JSoo ajsi ute une classe) ======
-   Si, dans ton JS, tu fais:
-     cell.classList.add('x')  pour Rouge
-     cell.classList.add('o')  pour Jaune
-   alors ces règles affichent automatiquement les pions ronds colorés. */
-.cell.x::after, .cell.o::after {
-  content: "";
-  position: absolute; inset: 8px;
-  border-radius: 75%;
-  border: 4px solid #0006;
-  box-shadow: inset 0 10px 18px #fff3, 0 8px 18px #0007;
-}
-.cell.x::after { background: #ff334e; }   /* Rouge */
-.cell.o::after { background: #ffd04d; }   /* Jaune */
-
-/* ====== Variante sans changer ton JS ======
-   Si ton JS met des lettres "X"/"O" (innerText), tu peux les remplacer
-   par de vrais ronds en insérant un <span class="text-x"></span> / <
-
-/* ton body peut rester centré pour le contenu */
-body { text-align: center; background: url(../IMG_0658.jpg) no-repeat center center fixed; background-size: cover; }
-body, button { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-/* header en pleine largeur, contenu à gauche/droite */
-.site-header{
-  width:100%;
-  background:#1e1e1e; color:#fff3;
-  display:flex; align-items:center; justify-content:space-between;
-  padding:12px 24px; box-sizing:border-box;
-  text-align: initial; /* annule le text-align:center du body dans le header */
-}
-
-/* gauche */
-.brand{ display:flex; align-items:center; gap:10px; font-weight:700; }
-.brand span{ font-size:1.1rem; }
-
-/* droite */
-.nav a{
-  color:#0C0032; text-decoration:none; margin-left:18px; font-weight:600;
-}
-.nav a:hover{ color:#190061; }
-
-/* option: bande noire au-dessus, et header collant */
-.top-band{ background:#000; color:#0C0032; text-align:center; padding:8px 16px; position:sticky; top:0; z-index:1001; }
-.site-header{ position:sticky; top:40px; z-index:1000; } /* 40px = hauteur approx. de la bande */

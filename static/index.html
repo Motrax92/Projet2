@@ -4,130 +4,246 @@
   <meta charset="UTF-8">
   <title>Puissant pas Quatre</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <!-- garde ton CSS externe si tu en as un -->
-  <link rel="stylesheet" href="style/css.css">
-
   <style>
-    /* ====== AJOUTS bande + header ====== */
-    /* Bande noire tout en haut */
-    .top-band{
-      width:100%;
-      background:#000000; color:#fff;
-      text-align:center;
-      padding:8px 16px;
-      font-weight:700;
-      letter-spacing:.2px;
-      position:sticky; top:0; z-index:1001;
-    }
-    /* Header: titre à gauche, liens à droite (collé sous la bande) */
-    .site-header{
-      width:100%;
-      background:#000000; color:#fff;
-      display:flex; align-items:center; justify-content:space-between;
-      padding:12px 24px; box-sizing:border-box;
-      position:sticky; top:40px; z-index:1000;  /* 40px ≈ hauteur de la bande */
-      text-align: initial; /* annule le centrage hérité du body */
-    }
-    .brand{display:flex; align-items:center; gap:10px; font-weight:700}
-    .brand span{font-size:1.1rem}
-    .nav a{color:#fff; text-decoration:none; margin-left:18px; font-weight:600}
-    .nav a:hover{color:#00bfff}
-
-    /* ====== Tes styles existants ====== */
+    /* ====== Fond général ====== */
     body {
-      font-family: Arial, sans-serif;
-      text-align: center; 
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      text-align: center;
+      margin: 0;
+      background: linear-gradient(to bottom, #1c2a35, #0d1b26); /* dégradé doux bleu-vert sombre */
+      color: #f0f0f5;
     }
+
+    /* ====== Bande supérieure ====== */
+    .top-band {
+      background: #0f3d3e; /* bleu-vert foncé */
+      color: #e0f7fa; /* texte clair */
+      text-align: center;
+      padding: 10px 0;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      position: sticky;
+      top: 0;
+      z-index: 1001;
+    }
+
+    /* ====== Header ====== */
+    .site-header {
+      width: 100%;
+      background: #144552; /* bleu-vert harmonieux */
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 24px;
+      box-sizing: border-box;
+      position: sticky;
+      top: 40px;
+      z-index: 1000;
+      border-bottom: 2px solid #00bfa5; /* ligne accentuée */
+    }
+
+    .brand span {
+      font-size: 1.3rem;
+      color: #e0f7fa;
+    }
+
+    .nav a {
+      color: #a0e0e0;
+      text-decoration: none;
+      margin-left: 20px;
+      font-weight: 600;
+      transition: color 0.3s;
+    }
+    .nav a:hover { color: #00bfa5; }
+
+    /* ====== Plateau ====== */
+    .board-wrap {
+      background: #0c4c4c; /* vert profond */
+      border-radius: 18px;
+      padding: 12px;
+      box-shadow: inset 0 14px 40px #0008, 0 18px 42px #0007;
+      width: fit-content;
+      margin: 30px auto;
+    }
+
+    .button-row {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .button-row button {
+      width: 56px;
+      height: 40px;
+      background: #00bfa5; /* accent turquoise */
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .button-row button:hover {
+      transform: translateY(-3px);
+      filter: brightness(1.2);
+    }
+
     .board {
       display: inline-block;
-      margin: 20px auto;
     }
-    .row { display: flex; }
+
+    .row {
+      display: flex;
+      gap: 8px;
+    }
+
     .cell {
-      width: 50px; height: 50px;
-      border: 1px solid #333;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 24px;
+      width: 56px;
+      height: 56px;
+      border-radius: 95%;
+      border: none;
+      background: radial-gradient(circle at 75% 75%, #0d2e2f 0 24%, #0a1c1d 75% 100%);
+      box-shadow: inset 0 8px 16px #000c, 0 4px 8px #0007;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0;
     }
-    button { margin: 5px; padding: 10px 20px; }
+
+    /* Jetons (inchangés) */
+    .cell.x::after, .cell.o::after {
+      content: "";
+      position: absolute; inset: 6px;
+      border-radius: 75%;
+      border: 3px solid #0006;
+      box-shadow: inset 0 8px 14px #fff3, 0 6px 14px #0007;
+      animation: drop 0.55s cubic-bezier(.34,1.56,.64,1);
+    }
+    .cell.x::after { background: #ff334e; } /* rouge */
+    .cell.o::after { background: #ffd04d; } /* jaune */
+
+    @keyframes drop {
+      0%   { transform: translateY(-140px) scale(1.1); opacity: 0.2; }
+      70%  { transform: translateY(0); opacity: 1; }
+      85%  { transform: translateY(-10px); }
+      100% { transform: translateY(0); }
+    }
+
+    /* Message */
+    #message {
+      min-height: 24px;
+      font-weight: 700;
+      margin-top: 12px;
+      color: #e0f7fa;
+    }
   </style>
 </head>
-
 <body>
 
-  <!-- Bande noire -->
   <div class="top-band">Puissant pas Quatre</div>
 
-  <!-- Header avec titre à gauche et liens à droite -->
   <header class="site-header">
-    <div class="brand">
-      <!-- <img src="logo.png" alt="Logo"> -->
-      <span></span>
-    </div>
+    <div class="brand"><span>Jeu en Ligne</span></div>
     <nav class="nav">
       <a href="#">Accueil</a>
-      <a href="#">Règles</a>
+      <a href="regles.html" target="_blank">Règles</a>
       <a href="#">Contact</a>
     </nav>
   </header>
 
   <main>
-    <p>Ceci est un puissant quatre créé par Mohamed, Joey, Aurélie.</p>
+    <p>Ceci est un puissant quatre créé par Mohamed, Joey et Aurélie.</p>
     <h2>Le but est d'aligner 4 jetons de sa couleur horizontalement, verticalement ou en diagonale pour remporter la partie.</h2>
 
-    <div id="board" class="board"></div>
-
-    <div>
-      <button onclick="play(0)">Colonne 1</button>
-      <button onclick="play(1)">Colonne 2</button>
-      <button onclick="play(2)">Colonne 3</button>
-      <button onclick="play(3)">Colonne 4</button>
-      <button onclick="play(4)">Colonne 5</button>
-      <button onclick="play(5)">Colonne 6</button>
-      <button onclick="play(6)">Colonne 7</button>
+    <div class="board-wrap">
+      <div class="button-row">
+        <button onclick="play(0)">↓</button>
+        <button onclick="play(1)">↓</button>
+        <button onclick="play(2)">↓</button>
+        <button onclick="play(3)">↓</button>
+        <button onclick="play(4)">↓</button>
+        <button onclick="play(5)">↓</button>
+        <button onclick="play(6)">↓</button>
+      </div>
+      <div id="board" class="board"></div>
     </div>
 
     <p id="message"></p>
   </main>
 
   <script>
-    async function play(column) {
-      const response = await fetch("/move", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ column }),
-      });
-      const result = await response.json();
-      renderGrid(result.Grid);
-      document.getElementById("message").textContent = result.Message;
-    }
+    const ROWS = 6;
+    const COLS = 7;
+    let grid = Array.from({length: COLS}, () => Array(ROWS).fill(" "));
+    let currentPlayer = "X";
+    let gameOver = false;
 
-    function renderGrid(grid) {
+    function renderGrid() {
       const board = document.getElementById("board");
       board.innerHTML = "";
-      for (let y = 0; y < 6; y++) {
+      for (let y = 0; y < ROWS; y++) {
         const row = document.createElement("div");
         row.className = "row";
-        for (let x = 0; x < 7; x++) {
+        for (let x = 0; x < COLS; x++) {
           const cell = document.createElement("div");
           cell.className = "cell";
-          cell.textContent = grid[x][y] === " " ? "" : grid[x][y];
+          if (grid[x][y] === "X") cell.classList.add("x");
+          if (grid[x][y] === "O") cell.classList.add("o");
           row.appendChild(cell);
         }
         board.appendChild(row);
       }
     }
 
-    // Initialise la grille vide
-    renderGrid([
-      [" "," "," "," "," "," "],
-      [" "," "," "," "," "," "],
-      [" "," "," "," "," "," "],
-      [" "," "," "," "," "," "],
-      [" "," "," "," "," "," "],
-      [" "," "," "," "," "," "],
-      [" "," "," "," "," "," "],
-    ]);
+    function play(col) {
+      if (gameOver) return;
+      for (let row = ROWS - 1; row >= 0; row--) {
+        if (grid[col][row] === " ") {
+          grid[col][row] = currentPlayer;
+          if (checkWin(col, row)) {
+            document.getElementById("message").textContent = `Le joueur ${currentPlayer} a gagné !`;
+            gameOver = true;
+          } else {
+            currentPlayer = currentPlayer === "X" ? "O" : "X";
+            document.getElementById("message").textContent = `À toi de jouer : ${currentPlayer}`;
+          }
+          renderGrid();
+          return;
+        }
+      }
+      alert("Colonne pleine !");
+    }
+
+    function checkWin(c, r) {
+      const directions = [
+        [[0,1],[0,-1]],   // verticale
+        [[1,0],[-1,0]],   // horizontale
+        [[1,1],[-1,-1]],  // diagonale \
+        [[1,-1],[-1,1]]   // diagonale /
+      ];
+
+      for (const dir of directions) {
+        let count = 1;
+        for (const [dx,dy] of dir) {
+          let x=c, y=r;
+          while (true) {
+            x += dx; y += dy;
+            if (x<0 || x>=COLS || y<0 || y>=ROWS) break;
+            if (grid[x][y] === currentPlayer) count++;
+            else break;
+          }
+        }
+        if (count >= 4) return true;
+      }
+      return false;
+    }
+
+    renderGrid();
+    document.getElementById("message").textContent = `À toi de jouer : ${currentPlayer}`;
   </script>
 </body>
 </html>
