@@ -9,8 +9,8 @@ body {
 
 /* ====== Bande supérieure ====== */
 .top-band {
-  background: #0f3d3e; /* bleu-vert foncé */
-  color: #e0f7fa; /* texte clair */
+  background: #e70707; /* bleu-vert foncé */
+  color: #000000; /* texte clair */
   text-align: center;
   padding: 10px 0;
   font-weight: 700;
