@@ -5,19 +5,41 @@
   <title>Puissant pas Quatre</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
-    /* ====== Fond général ====== */
+    /* ====== Vidéo de fond ====== */
+    .background-video{
+      position: fixed;
+      right: 0; bottom: 0; left: 0; top: 0;
+      width: 100vw; height: 100vh;
+      object-fit: cover;         /* remplit l’écran sans déformer */
+      z-index: -1;               /* derrière tout */
+    }
+
+    /* ====== Fond général (au-dessus de la vidéo) ====== */
+    html, body { margin: 0; }
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       text-align: center;
-      margin: 0;
-      background: linear-gradient(to bottom, #1c2a35, #0d1b26); /* dégradé doux bleu-vert sombre */
       color: #f0f0f5;
+      /* on enlève l'ancien dégradé pour laisser voir la vidéo */
+      background: transparent;
+    }
+
+    /* Un léger voile pour la lisibilité du texte */
+    .page-content{
+      position: relative;
+      min-height: 100vh;
+    }
+    .page-content::before{
+      content:"";
+      position: fixed; inset: 0;
+      background: rgba(6, 18, 24, 0.45); /* voile sombre */
+      z-index: -0.5;
     }
 
     /* ====== Bande supérieure ====== */
     .top-band {
-      background: #0f3d3e; /* bleu-vert foncé */
-      color: #e0f7fa; /* texte clair */
+      background: rgba(15, 61, 62, 0.95);
+      color: #e0f7fa;
       text-align: center;
       padding: 10px 0;
       font-weight: 700;
@@ -25,12 +47,13 @@
       position: sticky;
       top: 0;
       z-index: 1001;
+      backdrop-filter: blur(4px);
     }
 
     /* ====== Header ====== */
     .site-header {
       width: 100%;
-      background: #144552; /* bleu-vert harmonieux */
+      background: rgba(20, 69, 82, 0.92);
       color: #ffffff;
       display: flex;
       align-items: center;
@@ -40,154 +63,114 @@
       position: sticky;
       top: 40px;
       z-index: 1000;
-      border-bottom: 2px solid #00bfa5; /* ligne accentuée */
+      border-bottom: 2px solid #00bfa5;
+      backdrop-filter: blur(4px);
     }
-
-    .brand span {
-      font-size: 1.3rem;
-      color: #e0f7fa;
-    }
-
+    .brand span { font-size: 1.3rem; color: #e0f7fa; }
     .nav a {
-      color: #a0e0e0;
-      text-decoration: none;
-      margin-left: 20px;
-      font-weight: 600;
-      transition: color 0.3s;
+      color: #a0e0e0; text-decoration: none; margin-left: 20px; font-weight: 600;
+      transition: color .3s;
     }
     .nav a:hover { color: #00bfa5; }
 
     /* ====== Plateau ====== */
     .board-wrap {
-      background: #0c4c4c; /* vert profond */
+      background: rgba(12, 76, 76, 0.9);
       border-radius: 18px;
       padding: 12px;
       box-shadow: inset 0 14px 40px #0008, 0 18px 42px #0007;
       width: fit-content;
       margin: 30px auto;
+      backdrop-filter: blur(2px);
     }
-
     .button-row {
-      display: flex;
-      justify-content: center;
-      gap: 8px;
-      margin-bottom: 12px;
+      display: flex; justify-content: center; gap: 8px; margin-bottom: 12px;
     }
-
     .button-row button {
-      width: 56px;
-      height: 40px;
-      background: #00bfa5; /* accent turquoise */
-      color: #fff;
-      border: none;
-      border-radius: 10px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all 0.2s;
+      width: 56px; height: 40px; background: #00bfa5; color: #fff; border: none;
+      border-radius: 10px; font-weight: 700; cursor: pointer; transition: all .2s;
     }
-    .button-row button:hover {
-      transform: translateY(-3px);
-      filter: brightness(1.2);
-    }
-
-    .board {
-      display: inline-block;
-    }
-
-    .row {
-      display: flex;
-      gap: 8px;
-    }
-
-    .cell {
-      width: 56px;
-      height: 56px;
-      border-radius: 95%;
-      border: none;
+    .button-row button:hover { transform: translateY(-3px); filter: brightness(1.2); }
+    .board { display: inline-block; }
+    .row   { display: flex; gap: 8px; }
+    .cell{
+      width: 56px; height: 56px; border-radius: 95%; border: none;
       background: radial-gradient(circle at 75% 75%, #0d2e2f 0 24%, #0a1c1d 75% 100%);
       box-shadow: inset 0 8px 16px #000c, 0 4px 8px #0007;
-      position: relative;
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      position: relative; overflow: hidden; display:flex; align-items:center; justify-content:center;
       font-size: 0;
     }
-
-    /* Jetons (inchangés) */
-    .cell.x::after, .cell.o::after {
-      content: "";
-      position: absolute; inset: 6px;
-      border-radius: 75%;
-      border: 3px solid #0006;
-      box-shadow: inset 0 8px 14px #fff3, 0 6px 14px #0007;
-      animation: drop 0.55s cubic-bezier(.34,1.56,.64,1);
+    .cell.x::after, .cell.o::after{
+      content:""; position:absolute; inset:6px; border-radius:75%;
+      border:3px solid #0006; box-shadow: inset 0 8px 14px #fff3, 0 6px 14px #0007;
+      animation: drop .55s cubic-bezier(.34,1.56,.64,1);
     }
-    .cell.x::after { background: #ff334e; } /* rouge */
-    .cell.o::after { background: #ffd04d; } /* jaune */
-
-    @keyframes drop {
-      0%   { transform: translateY(-140px) scale(1.1); opacity: 0.2; }
-      70%  { transform: translateY(0); opacity: 1; }
-      85%  { transform: translateY(-10px); }
-      100% { transform: translateY(0); }
+    .cell.x::after{ background:#ff334e; }  /* rouge */
+    .cell.o::after{ background:#ffd04d; }  /* jaune */
+    @keyframes drop{
+      0%{ transform:translateY(-140px) scale(1.1); opacity:.2 }
+      70%{ transform:translateY(0); opacity:1 }
+      85%{ transform:translateY(-10px) }
+      100%{ transform:translateY(0) }
     }
-
-    /* Message */
-    #message {
-      min-height: 24px;
-      font-weight: 700;
-      margin-top: 12px;
-      color: #e0f7fa;
-    }
+    #message{ min-height:24px; font-weight:700; margin-top:12px; color:#e0f7fa; }
   </style>
 </head>
 <body>
 
-  <div class="top-band"><h2>Puissant pas Quatre</h2>
+  <!-- Vidéo de fond -->
+  <video class="background-video" autoplay muted loop playsinline>
+    <source src="/static/284566_large.mp4" type="video/mp4">
+    <!-- Astuce: ajoute poster="/static/cover.jpg" si tu veux une image de préchargement -->
+  </video>
 
-  <header class="site-header">
-    <div class="brand"><span></span></div>
-    <nav class="nav">
-      <a href="#">Accueil</a>
-      <a href="regles.html" target="_blank">Règles</a>
-      <a href="#">Contact</a>
-    </nav>
-  </header>
+  <!-- Tout le contenu passe au-dessus de la vidéo -->
+  <div class="page-content">
 
-  <main>
-    <h2>Ceci est un puissant quatre créé par Mohamed, Joey et Aurélie.</h2>
+    <div class="top-band"><h2>Puissant pas Quatre</h2></div>
 
-    <div class="board-wrap">
-      <div class="button-row">
-        <button onclick="play(0)">↓</button>
-        <button onclick="play(1)">↓</button>
-        <button onclick="play(2)">↓</button>
-        <button onclick="play(3)">↓</button>
-        <button onclick="play(4)">↓</button>
-        <button onclick="play(5)">↓</button>
-        <button onclick="play(6)">↓</button>
+    <header class="site-header">
+      <div class="brand"><span></span></div>
+      <nav class="nav">
+        <a href="/">Accueil</a>
+        <a href="/regle">Règles</a>
+        <a href="#">Contact</a>
+      </nav>
+    </header>
+
+    <main>
+      <h2>Ceci est un puissant quatre créé par Mohamed, Joey et Aurélie.</h2>
+
+      <div class="board-wrap">
+        <div class="button-row">
+          <button onclick="play(0)">↓</button>
+          <button onclick="play(1)">↓</button>
+          <button onclick="play(2)">↓</button>
+          <button onclick="play(3)">↓</button>
+          <button onclick="play(4)">↓</button>
+          <button onclick="play(5)">↓</button>
+          <button onclick="play(6)">↓</button>
+        </div>
+        <div id="board" class="board"></div>
       </div>
-      <div id="board" class="board"></div>
-    </div>
 
-    <p id="message"></p>
-  </main>
+      <p id="message"></p>
+    </main>
+
+  </div>
 
   <script>
-    const ROWS = 6;
-    const COLS = 7;
+    const ROWS = 6, COLS = 7;
     let grid = Array.from({length: COLS}, () => Array(ROWS).fill(" "));
-    let currentPlayer = "X";
-    let gameOver = false;
+    let currentPlayer = "X", gameOver = false;
 
-    function renderGrid() {
+    function renderGrid(){
       const board = document.getElementById("board");
       board.innerHTML = "";
-      for (let y = 0; y < ROWS; y++) {
+      for (let y=0; y<ROWS; y++){
         const row = document.createElement("div");
         row.className = "row";
-        for (let x = 0; x < COLS; x++) {
+        for (let x=0; x<COLS; x++){
           const cell = document.createElement("div");
           cell.className = "cell";
           if (grid[x][y] === "X") cell.classList.add("x");
@@ -198,12 +181,12 @@
       }
     }
 
-    function play(col) {
+    function play(col){
       if (gameOver) return;
-      for (let row = ROWS - 1; row >= 0; row--) {
-        if (grid[col][row] === " ") {
-          grid[col][row] = currentPlayer;
-          if (checkWin(col, row)) {
+      for (let r=ROWS-1; r>=0; r--){
+        if (grid[col][r] === " "){
+          grid[col][r] = currentPlayer;
+          if (checkWin(col, r)){
             document.getElementById("message").textContent = `Le joueur ${currentPlayer} a gagné !`;
             gameOver = true;
           } else {
@@ -217,26 +200,19 @@
       alert("Colonne pleine !");
     }
 
-    function checkWin(c, r) {
-      const directions = [
-        [[0,1],[0,-1]],   // verticale
-        [[1,0],[-1,0]],   // horizontale
-        [[1,1],[-1,-1]],  // diagonale \
-        [[1,-1],[-1,1]]   // diagonale /
-      ];
-
-      for (const dir of directions) {
+    function checkWin(c, r){
+      const dirs = [[[0,1],[0,-1]], [[1,0],[-1,0]], [[1,1],[-1,-1]], [[1,-1],[-1,1]]];
+      for (const dir of dirs){
         let count = 1;
-        for (const [dx,dy] of dir) {
+        for (const [dx,dy] of dir){
           let x=c, y=r;
-          while (true) {
-            x += dx; y += dy;
-            if (x<0 || x>=COLS || y<0 || y>=ROWS) break;
-            if (grid[x][y] === currentPlayer) count++;
-            else break;
+          while(true){
+            x+=dx; y+=dy;
+            if (x<0||x>=COLS||y<0||y>=ROWS) break;
+            if (grid[x][y] === currentPlayer) count++; else break;
           }
         }
-        if (count >= 4) return true;
+        if (count>=4) return true;
       }
       return false;
     }

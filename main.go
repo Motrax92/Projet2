@@ -38,19 +38,32 @@ type GameState struct {
 }
 
 func main() {
-	// sert /style/* (ex: /style/css.css)
-	http.Handle("/style/", http.StripPrefix("/", http.FileServer(http.Dir("."))))
+	// ====== Fichiers statiques ======
+	// /style/css.css -> lit dans le dossier "style"
+	http.Handle("/style/", http.StripPrefix("/style/", http.FileServer(http.Dir("style"))))
+	// /static/... -> lit dans le dossier "static" (vidéos, images, etc.)
+	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
 
-	http.HandleFunc("/", serveHome)
+	// ====== Pages ======
+	http.HandleFunc("/", serveHome)          // page du jeu -> static/index.html
+	http.HandleFunc("/regle", serveRegle)    // page règles -> static/regle.html
+	http.HandleFunc("/regle/", serveRegle)   // idem si /regle/ (avec / final)
+
+	// ====== API jeu ======
 	http.HandleFunc("/move", handleMove)
+	http.HandleFunc("/reset", handleReset) // optionnel : reset de la partie
 
 	log.Println("✅ Serveur lancé sur http://localhost:8080")
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
 
 func serveHome(w http.ResponseWriter, r *http.Request) {
-	// ton index est dans static/index.html
 	tpl := template.Must(template.ParseFiles("static/index.html"))
+	_ = tpl.Execute(w, nil)
+}
+
+func serveRegle(w http.ResponseWriter, r *http.Request) {
+	tpl := template.Must(template.ParseFiles("static/regle.html"))
 	_ = tpl.Execute(w, nil)
 }
 
@@ -73,11 +86,21 @@ func handleMove(w http.ResponseWriter, r *http.Request) {
 	_ = json.NewEncoder(w).Encode(resp)
 }
 
+func handleReset(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		http.Error(w, "Méthode non autorisée", http.StatusMethodNotAllowed)
+		return
+	}
+	resetGrid()
+	resp := GameState{Grid: exportGrid(), Message: "Plateau remis à zéro."}
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
+	_ = json.NewEncoder(w).Encode(resp)
+}
+
 func playMove(column int) string {
 	if column < 0 || column >= cols {
 		return "Colonne invalide."
 	}
-
 	// déposer le jeton (gravité)
 	for y := rows - 1; y >= 0; y-- {
 		if grid[column][y] == None {
