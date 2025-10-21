@@ -1,132 +1,44 @@
-/* ====== Fond général ====== */
-body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  text-align: center;
-  margin: 0;
-  background: linear-gradient(to bottom, #1c2a35, #0d1b26); /* dégradé doux bleu-vert sombre */
-  color: #f0f0f5;
+/* ===== Vidéo de fond + voile lisibilité ===== */
+.background-video{
+  position: fixed;
+  inset: 0;
+  width: 100vw; height: 100vh;
+  object-fit: cover;
+  z-index: -1;               /* derrière tout */
+}
+.page-content{ position: relative; min-height: 100vh; }
+.page-content::before{
+  content:"";
+  position: fixed; inset: 0;
+  background: rgba(6,18,24,.45); /* léger voile pour lire le texte sur la vidéo */
+  z-index: -0.5;
 }
 
-/* ====== Bande supérieure ====== */
-.top-band {
-  background: #e70707; /* bleu-vert foncé */
-  color: #000000; /* texte clair */
-  text-align: center;
-  padding: 10px 0;
-  font-weight: 700;
-  letter-spacing: 0.5px;
-  position: sticky;
-  top: 0;
-  z-index: 1001;
+/* ===== Bouton Reset (form POST /reset) ===== */
+.button-row form{ display:inline-block; margin:0; }
+.reset-btn{
+  background:#ef4444; color:#fff; border:none;
+  border-radius:10px; padding:10px 16px; font-weight:700; cursor:pointer;
+  transition: transform .15s ease, filter .15s ease;
+}
+.reset-btn:hover{ transform: translateY(-2px); filter: brightness(1.12); }
+
+/* ===== Anti “lignes blanches” entre cases ===== */
+.board{
+  background:#0b3b3b;        /* même famille que .board-wrap */
+  padding:8px;               /* comble le gap */
+  border-radius:16px;
+  box-shadow: inset 0 14px 40px #0006;
+}
+.row{ background:#0b3b3b; }  /* peint aussi entre les .cell */
+
+/* lissage rendu (évite micro-coutures sur certains zooms/écrans) */
+.cell{
+  backface-visibility: hidden;
+  transform: translateZ(0);
+  outline: 1px solid transparent;
 }
 
-/* ====== Header ====== */
-.site-header {
-  width: 100%;
-  background: #144552; /* bleu-vert harmonieux */
-  color: #ffffff;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 12px 24px;
-  box-sizing: border-box;
-  position: sticky;
-  top: 40px;
-  z-index: 1000;
-  border-bottom: 2px solid #00bfa5; /* ligne accentuée */
-}
-
-.brand span {
-  font-size: 1.3rem;
-  color: #e0f7fa;
-}
-
-.nav a {
-  color: #a0e0e0;
-  text-decoration: none;
-  margin-left: 20px;
-  font-weight: 600;
-  transition: color 0.3s;
-}
-.nav a:hover {
-  color: #00bfa5; /* bleu-vert clair */
-}
-
-/* ====== Plateau ====== */
-.board-wrap {
-  background: #0c4c4c; /* vert profond */
-  border-radius: 18px;
-  padding: 12px;
-  box-shadow: inset 0 14px 40px #0008, 0 18px 42px #0007;
-  width: fit-content;
-  margin: 30px auto;
-}
-
-/* Boutons au-dessus du plateau */
-.button-row {
-  display: flex;
-  justify-content: center;
-  gap: 8px;
-  margin-bottom: 12px;
-}
-
-.button-row button {
-  width: 56px;
-  height: 40px;
-  background: #00bfa5; /* accent turquoise */
-  color: #fff;
-  border: none;
-  border-radius: 10px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-.button-row button:hover {
-  transform: translateY(-3px);
-  filter: brightness(1.2);
-}
-
-/* Grille */
-.board {
-  display: inline-block;
-}
-
-.row {
-  display: flex;
-  gap: 8px;
-}
-
-/* Cases */
-.cell {
-  width: 56px;
-  height: 56px;
-  border-radius: 95%;
-  border: none;
-  background: radial-gradient(circle at 75% 75%, #0d2e2f 0 24%, #0a1c1d 75% 100%);
-  box-shadow: inset 0 8px 16px #000c, 0 4px 8px #0007;
-  position: relative;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0;
-}
-
-/* Jetons (inchangés) */
-.cell.x::after, .cell.o::after {
-  content: "";
-  position: absolute; inset: 6px;
-  border-radius: 75%;
-  border: 3px solid #0006;
-  box-shadow: inset 0 8px 14px #fff3, 0 6px 14px #0007;
-}
-.cell.x::after { background: #ff334e; } /* rouge */
-.cell.o::after { background: #ffd04d; } /* jaune */
-
-/* Message */
-#message {
-  min-height: 24px;
-  font-weight: 700;
-  margin-top: 12px;
-  color: #e0f7fa;
-}
+/* ===== Header & bande : sur une vidéo, un peu d’opacité aide ===== */
+.top-band{ background: rgba(231,7,7,.95); }
+.site-header{ background: rgba(20,69,82,.92); backdrop-filter: blur(4px); }

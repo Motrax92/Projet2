@@ -45,13 +45,13 @@ func main() {
 	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
 
 	// ====== Pages ======
-	http.HandleFunc("/", serveHome)          // page du jeu -> static/index.html
-	http.HandleFunc("/regle", serveRegle)    // page règles -> static/regle.html
-	http.HandleFunc("/regle/", serveRegle)   // idem si /regle/ (avec / final)
+	http.HandleFunc("/", serveHome)        // page du jeu -> static/index.html
+	http.HandleFunc("/regle", serveRegle)  // page règles -> static/regle.html
+	http.HandleFunc("/regle/", serveRegle) // idem si /regle/ (avec / final)
 
 	// ====== API jeu ======
 	http.HandleFunc("/move", handleMove)
-	http.HandleFunc("/reset", handleReset) // optionnel : reset de la partie
+	http.HandleFunc("/reset", handleReset) // reset sans JS -> redirection
 
 	log.Println("✅ Serveur lancé sur http://localhost:8080")
 	log.Fatal(http.ListenAndServe(":8080", nil))
@@ -86,15 +86,15 @@ func handleMove(w http.ResponseWriter, r *http.Request) {
 	_ = json.NewEncoder(w).Encode(resp)
 }
 
+// ✅ Reset SANS JavaScript : POST /reset -> reset -> redirection vers "/"
 func handleReset(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
 		http.Error(w, "Méthode non autorisée", http.StatusMethodNotAllowed)
 		return
 	}
 	resetGrid()
-	resp := GameState{Grid: exportGrid(), Message: "Plateau remis à zéro."}
-	w.Header().Set("Content-Type", "application/json; charset=utf-8")
-	_ = json.NewEncoder(w).Encode(resp)
+	// Redirige vers la home pour réafficher une grille vide
+	http.Redirect(w, r, "/", http.StatusSeeOther) // 303 See Other
 }
 
 func playMove(column int) string {
