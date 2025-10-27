@@ -14,7 +14,7 @@ const (
 )
 
 var grid [cols][rows]rune
-var currentPlayer rune = '🟡' // 🟡 commence
+var currentPlayer rune = '1' // 1 commence
 
 func init() { resetGrid() }
 
@@ -24,7 +24,7 @@ func resetGrid() {
 			grid[x][y] = None
 		}
 	}
-	currentPlayer = '🟡'
+	currentPlayer = '1'
 }
 
 type Move struct {
@@ -129,10 +129,10 @@ func playMove(column int) string {
 }
 
 func switchPlayer() {
-	if currentPlayer == '🟡' {
-		currentPlayer = '🔴'
+	if currentPlayer == '1' {
+		currentPlayer = '2'
 	} else {
-		currentPlayer = '🟡'
+		currentPlayer = '1'
 	}
 }
 

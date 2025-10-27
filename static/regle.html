@@ -2,162 +2,65 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Règles du Puissance 4</title>
+  <title>Règles du Puissant pas Quatre</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <style>
-    /* ====== Fond et texte ====== */
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      margin: 0;
-      text-align: center;
-      background: linear-gradient(to bottom, #1c2a35, #0d1b26);
-      color: #f0f0f5;
-    }
-
-    /* ====== Bande supérieure ====== */
-    .top-band {
-      background: #0f3d3e;
-      color: #e0f7fa;
-      text-align: center;
-      padding: 10px 0;
-      font-weight: 700;
-      letter-spacing: 0.5px;
-      position: sticky;
-      top: 0;
-      z-index: 1001;
-    }
-
-    /* ====== Header ====== */
-    .site-header {
-      width: 100%;
-      background: #144552;
-      color: #ffffff;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 12px 24px;
-      box-sizing: border-box;
-      position: sticky;
-      top: 40px;
-      z-index: 1000;
-      border-bottom: 2px solid #00bfa5;
-    }
-
-    .brand span {
-      font-size: 1.3rem;
-      color: #e0f7fa;
-    }
-
-    .nav a {
-      color: #a0e0e0;
-      text-decoration: none;
-      margin-left: 20px;
-      font-weight: 600;
-      transition: color 0.3s;
-    }
-    .nav a:hover { color: #00bfa5; }
-
-    /* ====== Contenu ====== */
-    main {
-      max-width: 900px;
-      margin: 30px auto;
-      padding: 0 20px;
-      text-align: left;
-      background: rgba(20, 69, 82, 0.85); /* plateau doux pour le texte */
-      border-radius: 15px;
-      box-shadow: 0 0 20px #0008;
-    }
-
-    main h1, main h2 {
-      text-align: center;
-      color: #e0f7fa;
-    }
-
-    main p, main li {
-      font-size: 1.1rem;
-      line-height: 1.6;
-      color: #f0f0f5;
-    }
-
-    main ul {
-      padding-left: 20px;
-      margin-bottom: 20px;
-    }
-
-    /* ====== Encadré exemple ====== */
-    .example-board {
-      display: flex;
-      justify-content: center;
-      margin: 20px 0;
-    }
-
-    .example-cell {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      margin: 2px;
-      background: radial-gradient(circle at 30% 30%, #0a1f2f, #0c2f3f);
-      box-shadow: inset 0 2px 6px #0008, 0 2px 4px #0006;
-      display: inline-block;
-    }
-
-    .example-cell.red { background: radial-gradient(circle at 30% 30%, #ff334e, #ff6f7a); }
-    .example-cell.yellow { background: radial-gradient(circle at 30% 30%, #ffd04d, #ffe57a); }
-
-    /* Responsive */
-    @media (max-width: 600px) {
-      main { padding: 15px; }
-      .example-cell { width: 30px; height: 30px; margin: 1px; }
-    }
-  </style>
+  <link rel="stylesheet" href="/style/css.css">
 </head>
 <body>
 
-  <div class="top-band">Puissant pas Quatre - Règles</div>
+  <!-- Vidéo de fond -->
+  <video class="background-video" autoplay muted loop playsinline preload="auto">
+    <source src="/static/284566_large.mp4" type="video/mp4">
+  </video>
 
-  <header class="site-header">
-    <div class="brand"><span></span></div>
-    <nav class="nav">
-      <a href="/index.html">Accueil</a>
-      <a href="/regle">Règles</a>
-      <a href="/contact">Contact</a>
-    </nav>
-  </header>
+  <div class="page-content">
 
-  <main>
-    <h1>Règles du Puissance 4</h1>
+    <div class="top-band"><h2>Puissant pas Quatre - Règles</h2></div>
 
-    <p>Puissance 4 est un jeu de stratégie pour deux joueurs. Le but est d'aligner quatre jetons de sa couleur avant l'adversaire, horizontalement, verticalement ou en diagonale.</p>
+    <header class="site-header">
+      <div class="brand"><span></span></div>
+      <nav class="nav">
+        <a href="/index">Accueil</a>
+        <a href="/regle">Règles</a>
+        <a href="/contact">Contact</a>
+      </nav>
+    </header>
 
-    <h2>Comment jouer :</h2>
-    <ul>
-      <li>Le jeu se joue sur une grille de 7 colonnes et 6 lignes.</li>
-      <li>Chaque joueur possède des jetons d'une couleur (rouge ou jaune).</li>
-      <li>Les joueurs déposent leur jeton dans la colonne de leur choix. Le jeton descend jusqu'à la première case vide de la colonne.</li>
-      <li>Le premier joueur à aligner 4 jetons de sa couleur gagne.</li>
-      <li>Si la grille est remplie sans qu'aucun joueur ait aligné 4 jetons, la partie est nulle.</li>
-    </ul>
+    <main class="text-page">
+      <h1>Règles du Puissant pas Quatre</h1>
 
-    <h2>Exemple :</h2>
-    <div class="example-board">
-      <div class="example-cell red"></div>
-      <div class="example-cell yellow"></div>
-      <div class="example-cell red"></div>
-      <div class="example-cell yellow"></div>
-      <div class="example-cell red"></div>
-      <div class="example-cell yellow"></div>
-      <div class="example-cell red"></div>
-    </div>
+      <p>Puissant pas Quatre est un jeu de stratégie pour deux joueurs. Le but est d'aligner quatre jetons de sa couleur avant l'adversaire, horizontalement, verticalement ou en diagonale.</p>
 
-    <p>Dans cet exemple, les jetons sont déposés dans différentes colonnes. Pour gagner, un joueur doit aligner 4 jetons de la même couleur.</p>
+      <h2>Comment jouer :</h2>
+      <ul>
+        <li>Le jeu se joue sur une grille de 7 colonnes et 6 lignes.</li>
+        <li>Chaque joueur possède des jetons d'une couleur (rouge ou jaune).</li>
+        <li>Les joueurs déposent leur jeton dans la colonne de leur choix. Le jeton descend jusqu'à la première case vide de la colonne.</li>
+        <li>Le premier joueur à aligner 4 jetons de sa couleur gagne.</li>
+        <li>Si la grille est remplie sans qu'aucun joueur n’ait aligné 4 jetons, la partie est nulle.</li>
+      </ul>
 
-    <h2>Conseils stratégiques :</h2>
-    <ul>
-      <li>Essayez de bloquer votre adversaire tout en créant vos propres lignes de 4.</li>
-      <li>Les diagonales sont souvent surprenantes, surveillez toutes les directions.</li>
-      <li>Planifiez vos coups à l'avance pour créer plusieurs menaces simultanées.</li>
-    </ul>
-  </main>
+      <h2>Exemple :</h2>
+      <div class="example-board">
+        <div class="example-cell red"></div>
+        <div class="example-cell yellow"></div>
+        <div class="example-cell red"></div>
+        <div class="example-cell yellow"></div>
+        <div class="example-cell red"></div>
+        <div class="example-cell yellow"></div>
+        <div class="example-cell red"></div>
+      </div>
 
+      <p>Dans cet exemple, les jetons sont déposés dans différentes colonnes. Pour gagner, un joueur doit aligner 4 jetons de la même couleur.</p>
+
+      <h2>Conseils stratégiques :</h2>
+      <ul>
+        <li>Essayez de bloquer votre adversaire tout en créant vos propres lignes de 4.</li>
+        <li>Les diagonales sont souvent décisives, surveillez toutes les directions.</li>
+        <li>Planifiez vos coups à l'avance pour créer plusieurs menaces simultanées.</li>
+      </ul>
+    </main>
+
+  </div>
 </body>
 </html>

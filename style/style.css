@@ -1,0 +1,166 @@
+/* ====== Vidéo de fond ====== */
+.background-video {
+  position: fixed;
+  right: 0; bottom: 0; left: 0; top: 0;
+  width: 100vw; height: 100vh;
+  object-fit: cover;
+  z-index: -1;
+}
+
+/* ====== Fond général ====== */
+html, body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  text-align: center;
+  color: #f0f0f5;
+  background: transparent;
+}
+
+.page-content {
+  position: relative;
+  min-height: 100vh;
+}
+.page-content::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: rgba(6, 18, 24, 0.45);
+  z-index: -0.5;
+}
+
+/* ====== Bande supérieure ====== */
+.top-band {
+  background: rgba(15, 61, 62, 0.95);
+  color: #e0f7fa;
+  text-align: center;
+  padding: 10px 0;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  position: sticky;
+  top: 0;
+  z-index: 1001;
+  backdrop-filter: blur(4px);
+}
+
+/* ====== Header ====== */
+.site-header {
+  width: 100%;
+  background: rgba(20, 69, 82, 0.92);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 24px;
+  box-sizing: border-box;
+  position: sticky;
+  top: 40px;
+  z-index: 1000;
+  border-bottom: 2px solid #00bfa5;
+  backdrop-filter: blur(4px);
+}
+
+.brand span { font-size: 1.3rem; color: #e0f7fa; }
+.nav a {
+  color: #a0e0e0;
+  text-decoration: none;
+  margin-left: 20px;
+  font-weight: 600;
+  transition: color .3s;
+}
+.nav a:hover { color: #00bfa5; }
+
+/* ====== Plateau du jeu ====== */
+.board-wrap {
+  background: rgba(12, 76, 76, 0.9);
+  border-radius: 18px;
+  padding: 12px;
+  box-shadow: inset 0 14px 40px #0008, 0 18px 42px #0007;
+  width: fit-content;
+  margin: 30px auto;
+  backdrop-filter: blur(2px);
+}
+.button-row { display: flex; justify-content: center; gap: 8px; margin-bottom: 12px; }
+.button-row button {
+  width: 56px; height: 40px;
+  background: #00bfa5; color: #fff; border: none;
+  border-radius: 10px; font-weight: 700; cursor: pointer;
+  transition: all .2s;
+}
+.button-row button:hover { transform: translateY(-3px); filter: brightness(1.2); }
+
+/* Bouton Reset */
+.reset-btn {
+  background: #ef4444;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 16px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.reset-btn:hover { filter: brightness(1.12); transform: translateY(-2px); }
+
+.board { display: inline-block; }
+.row { display: flex; gap: 8px; }
+.cell {
+  width: 56px; height: 56px;
+  border-radius: 95%;
+  background: radial-gradient(circle at 75% 75%, #0d2e2f 0 24%, #0a1c1d 75% 100%);
+  box-shadow: inset 0 8px 16px #000c, 0 4px 8px #0007;
+  position: relative;
+  overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+}
+.cell.x::after, .cell.o::after {
+  content: ""; position: absolute; inset: 6px; border-radius: 75%;
+  border: 3px solid #0006;
+  box-shadow: inset 0 8px 14px #fff3, 0 6px 14px #0007;
+  animation: drop .55s cubic-bezier(.34,1.56,.64,1);
+}
+.cell.x::after { background: #ff334e; }
+.cell.o::after { background: #ffd04d; }
+
+@keyframes drop {
+  0% { transform: translateY(-140px) scale(1.1); opacity: .2; }
+  70% { transform: translateY(0); opacity: 1; }
+  85% { transform: translateY(-10px); }
+  100% { transform: translateY(0); }
+}
+#message {
+  min-height: 24px;
+  font-weight: 700;
+  margin-top: 12px;
+  color: #e0f7fa;
+}
+
+/* ====== Pages texte ====== */
+.text-page {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 24px 32px;
+  text-align: left;
+  background: rgba(20, 69, 82, 0.85);
+  border-radius: 16px;
+  box-shadow: 0 0 20px #0008;
+  backdrop-filter: blur(3px);
+}
+.text-page h1, .text-page h2 {
+  text-align: center;
+  color: #e0f7fa;
+}
+.text-page p, .text-page li {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: #f0f0f5;
+}
+.text-page ul {
+  list-style-type: disc;
+  padding-left: 24px;
+}
+.text-page a {
+  color: #00bfa5;
+  text-decoration: none;
+}
+.text-page a:hover {
+  text-decoration: underline;
+}

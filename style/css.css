@@ -1,44 +1,164 @@
-/* ===== Vidéo de fond + voile lisibilité ===== */
-.background-video{
+/* ====== Style général ====== */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  color: #f0f0f5;
+  text-align: center;
+  background: #0d1b26;
+  overflow-x: hidden;
+}
+
+/* ====== Vidéo de fond ====== */
+.background-video {
   position: fixed;
-  inset: 0;
-  width: 100vw; height: 100vh;
+  top: 0;
+  left: 0;
+  min-width: 100%;
+  min-height: 100%;
   object-fit: cover;
-  z-index: -1;               /* derrière tout */
-}
-.page-content{ position: relative; min-height: 100vh; }
-.page-content::before{
-  content:"";
-  position: fixed; inset: 0;
-  background: rgba(6,18,24,.45); /* léger voile pour lire le texte sur la vidéo */
-  z-index: -0.5;
+  z-index: -1;
+  opacity: 0.45;
 }
 
-/* ===== Bouton Reset (form POST /reset) ===== */
-.button-row form{ display:inline-block; margin:0; }
-.reset-btn{
-  background:#ef4444; color:#fff; border:none;
-  border-radius:10px; padding:10px 16px; font-weight:700; cursor:pointer;
-  transition: transform .15s ease, filter .15s ease;
-}
-.reset-btn:hover{ transform: translateY(-2px); filter: brightness(1.12); }
-
-/* ===== Anti “lignes blanches” entre cases ===== */
-.board{
-  background:#0b3b3b;        /* même famille que .board-wrap */
-  padding:8px;               /* comble le gap */
-  border-radius:16px;
-  box-shadow: inset 0 14px 40px #0006;
-}
-.row{ background:#0b3b3b; }  /* peint aussi entre les .cell */
-
-/* lissage rendu (évite micro-coutures sur certains zooms/écrans) */
-.cell{
-  backface-visibility: hidden;
-  transform: translateZ(0);
-  outline: 1px solid transparent;
+/* ====== Bande supérieure ====== */
+.top-band {
+  background: #0f3d3e;
+  color: #e0f7fa;
+  text-align: center;
+  padding: 10px 0;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  position: sticky;
+  top: 0;
+  z-index: 1001;
 }
 
-/* ===== Header & bande : sur une vidéo, un peu d’opacité aide ===== */
-.top-band{ background: rgba(231,7,7,.95); }
-.site-header{ background: rgba(20,69,82,.92); backdrop-filter: blur(4px); }
+/* ====== Header ====== */
+.site-header {
+  width: 100%;
+  background: #144552;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 24px;
+  box-sizing: border-box;
+  position: sticky;
+  top: 40px;
+  z-index: 1000;
+  border-bottom: 2px solid #00bfa5;
+}
+
+.nav a {
+  color: #a0e0e0;
+  text-decoration: none;
+  margin-left: 20px;
+  font-weight: 600;
+  transition: color 0.3s;
+}
+.nav a:hover { color: #00bfa5; }
+
+/* ====== Accueil ====== */
+.home {
+  max-width: 800px;
+  margin: 60px auto;
+  padding: 24px;
+  background: rgba(20, 69, 82, 0.85);
+  border-radius: 16px;
+  box-shadow: 0 0 20px #0008;
+  backdrop-filter: blur(3px);
+}
+
+.play-zone {
+  margin-top: 30px;
+}
+
+.play-button {
+  display: inline-block;
+  background: #00bfa5;
+  color: #0d1b26;
+  padding: 14px 28px;
+  border-radius: 8px;
+  font-weight: bold;
+  text-decoration: none;
+  transition: background 0.3s;
+}
+
+.play-button:hover {
+  background: #04d7b2;
+}
+
+/* ====== Pages texte (règles, contact) ====== */
+.text-page {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 24px 32px;
+  text-align: left;
+  background: rgba(20, 69, 82, 0.85);
+  border-radius: 16px;
+  box-shadow: 0 0 20px #0008;
+  backdrop-filter: blur(3px);
+}
+
+.text-page h1, .text-page h2 {
+  text-align: center;
+  color: #e0f7fa;
+}
+
+.text-page p, 
+.text-page li {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: #f0f0f5;
+}
+
+.text-page ul {
+  list-style-type: disc;
+  padding-left: 24px;
+}
+
+.text-page a {
+  color: #00bfa5;
+  text-decoration: none;
+}
+
+.text-page a:hover {
+  text-decoration: underline;
+}
+
+/* ====== Exemple plateau ====== */
+.example-board {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.example-cell {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin: 2px;
+  background: radial-gradient(circle at 30% 30%, #0a1f2f, #0c2f3f);
+  box-shadow: inset 0 2px 6px #0008, 0 2px 4px #0006;
+  display: inline-block;
+}
+
+.example-cell.red {
+  background: radial-gradient(circle at 30% 30%, #ff334e, #ff6f7a);
+}
+
+.example-cell.yellow {
+  background: radial-gradient(circle at 30% 30%, #ffd04d, #ffe57a);
+}
+
+/* ====== Responsive ====== */
+@media (max-width: 600px) {
+  .text-page, .home {
+    padding: 16px;
+  }
+  .example-cell {
+    width: 30px;
+    height: 30px;
+    margin: 1px;
+  }
+}
