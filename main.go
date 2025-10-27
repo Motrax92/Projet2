@@ -48,7 +48,8 @@ func main() {
 	http.HandleFunc("/", serveHome)        // page du jeu -> static/index.html
 	http.HandleFunc("/regle", serveRegle)  // page règles -> static/regle.html
 	http.HandleFunc("/regle/", serveRegle) // idem si /regle/ (avec / final)
-
+	http.HandleFunc("/contact", serveContact) // page contact -> static/contact.html
+	http.HandleFunc("/contact/", serveContact)  // idem si /contact (sans .html)
 	// ====== API jeu ======
 	http.HandleFunc("/move", handleMove)
 	http.HandleFunc("/reset", handleReset) // reset sans JS -> redirection
@@ -66,7 +67,10 @@ func serveRegle(w http.ResponseWriter, r *http.Request) {
 	tpl := template.Must(template.ParseFiles("static/regle.html"))
 	_ = tpl.Execute(w, nil)
 }
-
+func serveContact(w http.ResponseWriter, r *http.Request) {
+	tpl := template.Must(template.ParseFiles("static/contact.html"))
+	_ = tpl.Execute(w, nil)
+}
 func handleMove(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
 		http.Error(w, "Méthode non autorisée", http.StatusMethodNotAllowed)
